@@ -79,6 +79,10 @@ func (db *EposDbSqlite) CreateEntry(entry model.ViewEntry) error {
 		entry.ID = time.Now().UnixNano()
 	}
 	entry.Source.ID = source.ID
+	updateErr := db.Source.UpdateDateById(source.ID, time.Now().Unix())
+	if updateErr != nil {
+		return updateErr
+	}
 	return db.Entry.Create(entry.TransformToStore())
 }
 

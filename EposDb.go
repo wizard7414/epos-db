@@ -68,6 +68,10 @@ type SourceDao interface {
 	GetById(sourceId int64) (model.StoreSource, error)
 
 	GetByTitle(sourceTitle string) ([]model.StoreSource, error)
+
+	UpdateDateById(sourceId int64, newDate int64) error
+
+	UpdateDateByTitle(sourceTitle string, newDate int64) error
 }
 
 type EntryDao interface {

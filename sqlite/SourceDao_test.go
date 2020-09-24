@@ -34,7 +34,7 @@ func TestSourceDaoSqlite_GetById(t *testing.T) {
 		t.Fail()
 	}
 
-	source, findErr := base.Source.GetById(1)
+	source, findErr := base.Source.GetById(1600682767129601576)
 
 	if source.Title != "testSource" || findErr != nil {
 		t.Fail()
@@ -51,6 +51,34 @@ func TestSourceDaoSqlite_GetByTitle(t *testing.T) {
 	sourceList, findErr := base.Source.GetByTitle("testSource")
 
 	if len(sourceList) != 1 || sourceList[0].Title != "testSource" || findErr != nil {
+		t.Fail()
+	}
+}
+
+func TestSourceDaoSqlite_UpdateDateById(t *testing.T) {
+	base, err := Init()
+	defer base.CloseDb()
+	if base == nil || err != nil {
+		t.Fail()
+	}
+
+	updateErr := base.Source.UpdateDateById(1600682767129601576, time.Now().Unix())
+
+	if updateErr != nil {
+		t.Fail()
+	}
+}
+
+func TestSourceDaoSqlite_UpdateDateByTitle(t *testing.T) {
+	base, err := Init()
+	defer base.CloseDb()
+	if base == nil || err != nil {
+		t.Fail()
+	}
+
+	updateErr := base.Source.UpdateDateByTitle("testSource", time.Now().Unix())
+
+	if updateErr != nil {
 		t.Fail()
 	}
 }

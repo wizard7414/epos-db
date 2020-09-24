@@ -29,3 +29,13 @@ func (dao *SourceDaoSqlite) GetByTitle(sourceTitle string) ([]model.StoreSource,
 	result := dao.DB.Where("title = ?", sourceTitle).Find(&sources)
 	return sources, result.Error
 }
+
+func (dao *SourceDaoSqlite) UpdateDateById(sourceId int64, newDate int64) error {
+	result := dao.DB.Model(model.StoreSource{}).Where("id = ?", sourceId).Update("change_date", newDate)
+	return result.Error
+}
+
+func (dao *SourceDaoSqlite) UpdateDateByTitle(sourceTitle string, newDate int64) error {
+	result := dao.DB.Model(model.StoreSource{}).Where("title = ?", sourceTitle).Update("change_date", newDate)
+	return result.Error
+}

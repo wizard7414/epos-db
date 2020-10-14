@@ -201,3 +201,16 @@ func TestEposDbSqlite_GetObjectAttributes(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestEposDbSqlite_GetObjectByUrl(t *testing.T) {
+	base, err := Init()
+	defer base.CloseDb()
+	if err != nil {
+		t.Fail()
+	}
+
+	objects, findErr := base.GetObjectByUrl("Test object Url")
+	if findErr != nil || len(objects) != 1 {
+		t.Fail()
+	}
+}

@@ -18,6 +18,8 @@ type EposDb interface {
 	CreateObject(object model.ViewObject) error
 
 	GetObjectAttributes(objectId int64) ([]model.ViewAttribute, error)
+
+	GetObjectByUrl(objectUrl string) ([]model.ViewObject, error)
 }
 
 type AttributeCodeDao interface {
@@ -102,6 +104,8 @@ type ObjectDao interface {
 	GetById(objectId int64) (model.StoreObject, error)
 
 	GetByTitle(objectTitle string) ([]model.StoreObject, error)
+
+	GetByUrl(objectUrl string) ([]model.StoreObject, error)
 }
 
 type ObjectAttributeDao interface {

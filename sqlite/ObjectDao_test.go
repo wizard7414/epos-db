@@ -14,7 +14,7 @@ func TestObjectDaoSqlite_Create(t *testing.T) {
 	}
 
 	object := model.StoreObject{
-		ID:         0,
+		ID:         1,
 		Title:      "testObject",
 		Entry:      1,
 		Url:        "testObjectUrl",
@@ -50,6 +50,20 @@ func TestObjectDaoSqlite_GetByTitle(t *testing.T) {
 	}
 
 	objects, findErr := base.Object.GetByTitle("testObject")
+
+	if len(objects) != 1 || objects[0].Title != "testObject" || findErr != nil {
+		t.Fail()
+	}
+}
+
+func TestObjectDaoSqlite_GetByUrl(t *testing.T) {
+	base, err := Init()
+	defer base.CloseDb()
+	if base == nil || err != nil {
+		t.Fail()
+	}
+
+	objects, findErr := base.Object.GetByUrl("testObjectUrl")
 
 	if len(objects) != 1 || objects[0].Title != "testObject" || findErr != nil {
 		t.Fail()

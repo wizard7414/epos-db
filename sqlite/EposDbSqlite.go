@@ -156,3 +156,49 @@ func (db *EposDbSqlite) GetObjectAttributes(objectId int64) ([]model.ViewAttribu
 
 	return result, nil
 }
+
+func (db *EposDbSqlite) GetObjectByUrl(objectUrl string) ([]model.ViewObject, error) {
+	objects, findErr := db.Object.GetByUrl(objectUrl)
+	var result []model.ViewObject
+	if findErr != nil {
+		return result, findErr
+	}
+
+	for index := range objects {
+		resultObject := objects[index].TransformToView()
+
+		objectType, objectTypeErr := db.ObjectType.GetById(objects[index].ObjectType)
+		if objectTypeErr != nil {
+			return result, objectTypeErr
+		}
+		resultObject.ObjectType = objectType.TransformToView()
+
+		entry, entryErr := db.Entry.GetById(resultObject.Entry.ID)
+		if entryErr != nil {
+			return result, entryErr
+		}
+		resultObject.Entry = entry.TransformToView()
+
+		entrySource, entrySourceErr := db.Source.GetById(resultObject.Entry.Source.ID)
+		if entrySourceErr != nil {
+			return result, entrySourceErr
+		}
+		resultObject.Entry.Source = entrySource.TransformToView()
+
+		sourceResource, sourceResourceErr := db.Resource.GetById(resultObject.Entry.Source.Resource.ID)
+		if sourceResourceErr != nil {
+			return result, sourceResourceErr
+		}
+		resultObject.Entry.Source.Resource = sourceResource.TransformToView()
+
+		attributes, attributesErr := db.GetObjectAttributes(resultObject.ID)
+		if attributesErr != nil {
+			return result, attributesErr
+		}
+		resultObject.Attributes = attributes
+
+		result = append(result, resultObject)
+	}
+
+	return result, nil
+}

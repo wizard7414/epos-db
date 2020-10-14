@@ -29,3 +29,9 @@ func (dao *ObjectDaoSqlite) GetByTitle(objectTitle string) ([]model.StoreObject,
 	result := dao.DB.Where("title = ?", objectTitle).Find(&objects)
 	return objects, result.Error
 }
+
+func (dao *ObjectDaoSqlite) GetByUrl(objectUrl string) ([]model.StoreObject, error) {
+	var objects []model.StoreObject
+	result := dao.DB.Where("url = ?", objectUrl).Find(&objects)
+	return objects, result.Error
+}
